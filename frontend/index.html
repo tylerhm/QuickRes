@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuickRes</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <!-- ── LEFT PANE ─────────────────────────────────────────────────── -->
+      <aside class="pane form-pane">
+        <div class="form-header">
+          <div>
+            <h1>QuickRes</h1>
+            <p class="subtitle">Resume generator powered by RenderCV</p>
+          </div>
+          <div class="header-actions">
+            <button id="save-btn" class="btn-ghost" title="Save resume as JSON">Save</button>
+            <label class="btn-ghost" title="Load resume from JSON">
+              Load
+              <input id="load-input" type="file" accept=".json" style="display: none" />
+            </label>
+            <select id="theme" class="theme-select" title="Theme">
+              <option value="classic">Classic</option>
+              <option value="sb2nov">SB2Nov</option>
+              <option value="moderncv">ModernCV</option>
+              <option value="engineeringresumes">Engineering Resumes</option>
+            </select>
+          </div>
+          <!-- /header-actions -->
+        </div>
+
+        <div class="form-body">
+          <!-- Personal Info -->
+          <section class="card">
+            <h2 class="card-title">Personal Info</h2>
+            <div class="field">
+              <label for="name">Full Name <span class="req">*</span></label>
+              <input id="name" type="text" placeholder="Jane Smith" />
+            </div>
+            <div class="field">
+              <label for="headline">Headline</label>
+              <input id="headline" type="text" placeholder="Senior Software Engineer" />
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" type="email" placeholder="jane@example.com" />
+              </div>
+              <div class="field">
+                <label for="phone">Phone</label>
+                <input id="phone" type="tel" placeholder="+1 555 000 0000" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="location">Location</label>
+                <input id="location" type="text" placeholder="San Francisco, CA" />
+              </div>
+              <div class="field">
+                <label for="website">Website</label>
+                <input id="website" type="url" placeholder="https://janesmith.dev" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="linkedin">LinkedIn</label>
+                <div class="input-prefix">
+                  <span>in/</span>
+                  <input id="linkedin" type="text" placeholder="janesmith" />
+                </div>
+              </div>
+              <div class="field">
+                <label for="github">GitHub</label>
+                <div class="input-prefix">
+                  <span>gh/</span>
+                  <input id="github" type="text" placeholder="janesmith" />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div id="sections-container">
+          <!-- Experience -->
+          <section class="card" data-section="experience">
+            <div class="card-header">
+              <div class="card-header-left">
+                <span class="section-drag-handle" title="Drag to reorder"><svg width="10" height="14" viewBox="0 0 10 14" fill="currentColor"><circle cx="3" cy="2.5" r="1.2"/><circle cx="7" cy="2.5" r="1.2"/><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="3" cy="11.5" r="1.2"/><circle cx="7" cy="11.5" r="1.2"/></svg></span>
+                <h2 class="card-title">Experience</h2>
+              </div>
+              <button type="button" class="btn-add" id="add-experience">+ Add</button>
+            </div>
+            <div id="experience-entries"></div>
+          </section>
+
+          <!-- Education -->
+          <section class="card" data-section="education">
+            <div class="card-header">
+              <div class="card-header-left">
+                <span class="section-drag-handle" title="Drag to reorder"><svg width="10" height="14" viewBox="0 0 10 14" fill="currentColor"><circle cx="3" cy="2.5" r="1.2"/><circle cx="7" cy="2.5" r="1.2"/><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="3" cy="11.5" r="1.2"/><circle cx="7" cy="11.5" r="1.2"/></svg></span>
+                <h2 class="card-title">Education</h2>
+              </div>
+              <button type="button" class="btn-add" id="add-education">+ Add</button>
+            </div>
+            <div id="education-entries"></div>
+          </section>
+
+          <!-- Skills -->
+          <section class="card" data-section="skills">
+            <div class="card-header">
+              <div class="card-header-left">
+                <span class="section-drag-handle" title="Drag to reorder"><svg width="10" height="14" viewBox="0 0 10 14" fill="currentColor"><circle cx="3" cy="2.5" r="1.2"/><circle cx="7" cy="2.5" r="1.2"/><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="3" cy="11.5" r="1.2"/><circle cx="7" cy="11.5" r="1.2"/></svg></span>
+                <h2 class="card-title">Skills</h2>
+              </div>
+              <button type="button" class="btn-add" id="add-skill">+ Add</button>
+            </div>
+            <div id="skills-entries"></div>
+          </section>
+
+          <!-- Projects -->
+          <section class="card" data-section="projects">
+            <div class="card-header">
+              <div class="card-header-left">
+                <span class="section-drag-handle" title="Drag to reorder"><svg width="10" height="14" viewBox="0 0 10 14" fill="currentColor"><circle cx="3" cy="2.5" r="1.2"/><circle cx="7" cy="2.5" r="1.2"/><circle cx="3" cy="7" r="1.2"/><circle cx="7" cy="7" r="1.2"/><circle cx="3" cy="11.5" r="1.2"/><circle cx="7" cy="11.5" r="1.2"/></svg></span>
+                <h2 class="card-title">Projects</h2>
+              </div>
+              <button type="button" class="btn-add" id="add-project">+ Add</button>
+            </div>
+            <div id="projects-entries"></div>
+          </section>
+          </div><!-- /sections-container -->
+
+          <!-- Custom sections -->
+          <div id="custom-sections"></div>
+          <button type="button" class="btn-add-section" id="add-custom-section">
+            + Add Section
+          </button>
+        </div>
+        <!-- /form-body -->
+
+        <div class="form-footer">
+          <button id="generate-btn" class="btn-primary">Generate Resume</button>
+          <span id="status-msg"></span>
+        </div>
+      </aside>
+
+      <!-- ── RIGHT PANE ────────────────────────────────────────────────── -->
+      <main class="pane preview-pane">
+        <div class="preview-body">
+          <div id="preview-placeholder" class="placeholder">
+            <div class="placeholder-icon">
+              <svg
+                width="56"
+                height="56"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.25"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="16" y1="13" x2="8" y2="13" />
+                <line x1="16" y1="17" x2="8" y2="17" />
+                <polyline points="10 9 9 9 8 9" />
+              </svg>
+            </div>
+            <p>
+              Fill in the form and click<br /><strong>Generate Resume</strong> to preview your PDF
+            </p>
+          </div>
+          <div id="preview-loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p>Generating resume…</p>
+          </div>
+          <div id="preview-error" class="preview-error hidden">
+            <strong>Error</strong>
+            <pre id="preview-error-text"></pre>
+          </div>
+          <iframe id="pdf-iframe" class="hidden" title="Resume Preview"></iframe>
+        </div>
+      </main>
+    </div>
+    <!-- /app -->
+
+    <!-- ── ENTRY TEMPLATES ───────────────────────────────────────────── -->
+
+    <template id="tpl-experience">
+      <div class="entry-card">
+        <div class="entry-card-header">
+          <span class="entry-label">Position</span>
+          <button type="button" class="btn-remove" title="Remove">✕</button>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Company</label>
+            <input name="company" type="text" placeholder="Acme Corp" />
+          </div>
+          <div class="field">
+            <label>Position</label>
+            <input name="position" type="text" placeholder="Software Engineer" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Location</label>
+          <input name="location" type="text" placeholder="San Francisco, CA" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Start Date</label>
+            <input name="start_date" type="text" placeholder="2021-06" />
+          </div>
+          <div class="field">
+            <label>End Date</label>
+            <input name="end_date" type="text" placeholder="present" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Summary</label>
+          <textarea
+            name="summary"
+            rows="2"
+            placeholder="Brief overview of your role and impact…"
+          ></textarea>
+        </div>
+        <div class="field">
+          <label>Highlights</label>
+          <div class="highlights-list"></div>
+          <button type="button" class="btn-add-highlight">+ Add Item</button>
+        </div>
+      </div>
+    </template>
+
+    <template id="tpl-education">
+      <div class="entry-card">
+        <div class="entry-card-header">
+          <span class="entry-label">Degree</span>
+          <button type="button" class="btn-remove" title="Remove">✕</button>
+        </div>
+        <div class="field">
+          <label>Institution</label>
+          <input
+            name="institution"
+            type="text"
+            placeholder="Massachusetts Institute of Technology"
+          />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Area / Major</label>
+            <input name="area" type="text" placeholder="Computer Science" />
+          </div>
+          <div class="field">
+            <label>Degree</label>
+            <input name="degree" type="text" placeholder="BS" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Location</label>
+          <input name="location" type="text" placeholder="Cambridge, MA" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Start Date</label>
+            <input name="start_date" type="text" placeholder="2017-09" />
+          </div>
+          <div class="field">
+            <label>End Date</label>
+            <input name="end_date" type="text" placeholder="2021-05" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Summary</label>
+          <textarea
+            name="summary"
+            rows="2"
+            placeholder="Brief overview of your studies…"
+          ></textarea>
+        </div>
+        <div class="field">
+          <label>Highlights</label>
+          <div class="highlights-list"></div>
+          <button type="button" class="btn-add-highlight">+ Add Item</button>
+        </div>
+      </div>
+    </template>
+
+    <template id="tpl-skill">
+      <div class="entry-card">
+        <div class="entry-card-header">
+          <span class="entry-label">Skill</span>
+          <button type="button" class="btn-remove" title="Remove">✕</button>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Category</label>
+            <input name="label" type="text" placeholder="Programming Languages" />
+          </div>
+          <div class="field">
+            <label>Details</label>
+            <input name="details" type="text" placeholder="Python, Go, TypeScript" />
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <template id="tpl-project">
+      <div class="entry-card">
+        <div class="entry-card-header">
+          <span class="entry-label">Project</span>
+          <button type="button" class="btn-remove" title="Remove">✕</button>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Name</label>
+            <input name="name" type="text" placeholder="My Awesome Project" />
+          </div>
+          <div class="field">
+            <label>Date</label>
+            <input name="date" type="text" placeholder="2023 or 2022 – 2023" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Summary</label>
+          <textarea name="summary" rows="2" placeholder="Brief overview of the project…"></textarea>
+        </div>
+        <div class="field">
+          <label>Highlights</label>
+          <div class="highlights-list"></div>
+          <button type="button" class="btn-add-highlight">+ Add Item</button>
+        </div>
+      </div>
+    </template>
+
+    <template id="tpl-custom-entry">
+      <div class="entry-card">
+        <div class="entry-card-header">
+          <span class="entry-label">Entry</span>
+          <button type="button" class="btn-remove" title="Remove">✕</button>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Name</label>
+            <input name="name" type="text" placeholder="Entry title" />
+          </div>
+          <div class="field">
+            <label>Date</label>
+            <input name="date" type="text" placeholder="2023" />
+          </div>
+        </div>
+        <div class="field">
+          <label>Summary</label>
+          <textarea name="summary" rows="2" placeholder="Brief overview…"></textarea>
+        </div>
+        <div class="field">
+          <label>Highlights</label>
+          <div class="highlights-list"></div>
+          <button type="button" class="btn-add-highlight">+ Add Item</button>
+        </div>
+      </div>
+    </template>
+
+    <script src="script.js"></script>
+  </body>
+</html>
